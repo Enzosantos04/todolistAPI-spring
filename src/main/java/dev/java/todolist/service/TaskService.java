@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,5 +34,44 @@ public class TaskService {
         Task task = taskMapper.map(taskDTO);
         Task savedTask = taskRepository.save(task);
         return taskMapper.map(savedTask);
+    }
+
+    public void deleteTask(Long id){
+        taskRepository.deleteById(id);
+    }
+
+    public TaskDTO updateTask(Long id, TaskDTO taskDTO){
+        Optional<Task> existingTask = taskRepository.findById(id);
+        if(existingTask.isPresent()){
+            Task updatedTask =  taskMapper.map(taskDTO);
+            updatedTask.setId(id);
+            Task savedTask = taskRepository.save(updatedTask);
+            return taskMapper.map(savedTask);
+        }
+        return null;
+    }
+
+    public TaskDTO getTaskById(Long id){
+        Optional<Task> task = taskRepository.findById(id);
+        return task.map(taskMapper::map).orElse(null);
+    }
+
+    public TaskDTO getTaskByTitle(String title){
+        Task task = taskRepository.findTaskByTitle(title);
+        if(task != null){
+            return taskMapper.map(task);
+        }
+        return null;
+    }
+
+    public TaskDTO setTaskStatus(Long id, TaskDTO taskDTO){
+        Optional<Task> existingTask = taskRepository.findById(id);
+        if(existingTask.isPresent()){
+            Task task = existingTask.get();
+            task.setStatus(taskDTO.getStatus());
+            Task savedTask = taskRepository.save(task);
+            return taskMapper.map(savedTask);
+        }
+        return null;
     }
 }
