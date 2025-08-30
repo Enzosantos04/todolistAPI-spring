@@ -49,5 +49,15 @@ public class TaskController {
         }
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<TaskDTO> getTaskByTitle(@RequestParam String title){
+        TaskDTO taskDTO =  taskService.getTaskByTitle(title);
+        if(taskDTO != null){
+            return ResponseEntity.status(HttpStatus.OK).body(taskDTO);
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
 
 }
