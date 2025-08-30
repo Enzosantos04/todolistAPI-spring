@@ -1,6 +1,7 @@
 package dev.java.todolist.service;
 
 import dev.java.todolist.dto.TaskDTO;
+import dev.java.todolist.dto.TaskStatusDTO;
 import dev.java.todolist.entity.Task;
 import dev.java.todolist.mapper.TaskMapper;
 import dev.java.todolist.repository.TaskRepository;
@@ -64,11 +65,11 @@ public class TaskService {
         return null;
     }
 
-    public TaskDTO setTaskStatus(Long id, TaskDTO taskDTO){
+    public TaskDTO setTaskStatus(Long id, TaskStatusDTO taskStatusDTO){
         Optional<Task> existingTask = taskRepository.findById(id);
         if(existingTask.isPresent()){
             Task task = existingTask.get();
-            task.setStatus(taskDTO.getStatus());
+            task.setStatus(taskStatusDTO.getStatus());
             Task savedTask = taskRepository.save(task);
             return taskMapper.map(savedTask);
         }
