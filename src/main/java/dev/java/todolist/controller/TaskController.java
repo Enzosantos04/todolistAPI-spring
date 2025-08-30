@@ -1,8 +1,12 @@
 package dev.java.todolist.controller;
 
+import dev.java.todolist.dto.TaskDTO;
 import dev.java.todolist.service.TaskService;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/tasks")
@@ -12,4 +16,38 @@ public class TaskController {
     public TaskController(TaskService taskService) {
         this.taskService = taskService;
     }
+
+
+    @GetMapping
+    public ResponseEntity<List<TaskDTO>> listAlltasks(){
+        List<TaskDTO> tasks = taskService.listAllTask();
+        return ResponseEntity.status(HttpStatus.OK).body(tasks);
+    }
+
+    @PostMapping
+    public ResponseEntity<TaskDTO> createTask(TaskDTO taskDTO){
+        TaskDTO newTask = taskService.createTask(taskDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(newTask);
+    }
+
+    @PatchMapping("/{id}")
+    public  ResponseEntity<TaskDTO> updateTask(@PathVariable Long id, @RequestBody TaskDTO taskDTO){
+        if(taskService.getTaskById(id) != null){
+            TaskDTO updatedTask = taskService.updateTask(id, taskDTO);
+            return ResponseEntity.status(HttpStatus.OK).body(updatedTask);
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<TaskDTO> deleteTaskById(@PathVariable Long id){
+        if(taskService.getTaskById(id) != null){
+            taskService.deleteTask(id);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
+
 }
