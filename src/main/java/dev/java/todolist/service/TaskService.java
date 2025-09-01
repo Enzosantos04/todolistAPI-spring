@@ -3,6 +3,7 @@ package dev.java.todolist.service;
 import dev.java.todolist.dto.TaskDTO;
 import dev.java.todolist.dto.TaskStatusDTO;
 import dev.java.todolist.entity.Task;
+import dev.java.todolist.enums.TaskStatus;
 import dev.java.todolist.mapper.TaskMapper;
 import dev.java.todolist.repository.TaskRepository;
 import org.springframework.stereotype.Service;
@@ -32,8 +33,8 @@ public class TaskService {
 
     public TaskDTO createTask(TaskDTO taskDTO){
         Task task = taskMapper.map(taskDTO);
-        Task savedTask = taskRepository.save(task);
-        return taskMapper.map(savedTask);
+        task = taskRepository.save(task);
+        return taskMapper.map(task);
     }
 
     public void deleteTask(Long id){
@@ -68,7 +69,7 @@ public class TaskService {
         Optional<Task> existingTask = taskRepository.findById(id);
         if(existingTask.isPresent()){
             Task task = existingTask.get();
-            task.setStatus(taskStatusDTO.getStatus());
+            task.setStatus(TaskStatus.valueOf(taskStatusDTO.getStatus()));
             Task savedTask = taskRepository.save(task);
             return taskMapper.map(savedTask);
         }
