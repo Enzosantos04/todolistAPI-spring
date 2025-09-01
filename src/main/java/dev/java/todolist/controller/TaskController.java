@@ -59,5 +59,16 @@ public class TaskController {
         }
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<TaskDTO> getTaskById(@PathVariable Long id){
+        if (taskService.getTaskById(id) != null){
+            TaskDTO taskDTO = taskService.getTaskById(id);
+            return ResponseEntity.status(HttpStatus.FOUND).body(taskDTO);
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+
+        }
+    }
+
 
 }
