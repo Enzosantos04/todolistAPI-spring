@@ -13,6 +13,7 @@ public class TaskMapper {
         newTask.setId(taskDTO.getId());
         newTask.setTitle(taskDTO.getTitle());
         newTask.setDescription(taskDTO.getDescription());
+        newTask.setStatus(taskDTO.getStatus() != null ? taskDTO.getStatus() : TaskStatus.PENDING);
         return newTask;
 
 
@@ -23,6 +24,7 @@ public class TaskMapper {
         taskDTO.setId(task.getId());
         taskDTO.setTitle(task.getTitle());
         taskDTO.setDescription(task.getDescription());
+        taskDTO.setStatus(task.getStatus());
         return taskDTO;
     }
 }
