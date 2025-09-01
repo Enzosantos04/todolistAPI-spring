@@ -1,6 +1,7 @@
 package dev.java.todolist.entity;
 
 
+import dev.java.todolist.enums.TaskStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,7 +21,8 @@ public class Task {
     private Long id;
     private String title;
     private String description;
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private TaskStatus status;
     @CreationTimestamp
     private LocalDateTime createdAt;
     @UpdateTimestamp
