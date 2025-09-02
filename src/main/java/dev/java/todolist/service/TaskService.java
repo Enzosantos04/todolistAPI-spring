@@ -65,11 +65,11 @@ public class TaskService {
         return null;
     }
 
-    public TaskDTO setTaskStatus(Long id, TaskStatusDTO taskStatusDTO){
+    public TaskDTO setTaskStatus(Long id, TaskDTO  taskDTO){
         Optional<Task> existingTask = taskRepository.findById(id);
         if(existingTask.isPresent()){
             Task task = existingTask.get();
-            task.setStatus(TaskStatus.valueOf(taskStatusDTO.getStatus()));
+            task.setStatus(taskDTO.getStatus());
             Task savedTask = taskRepository.save(task);
             return taskMapper.map(savedTask);
         }
