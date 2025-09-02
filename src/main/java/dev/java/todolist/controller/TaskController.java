@@ -70,5 +70,13 @@ public class TaskController {
         }
     }
 
-
+    @PostMapping("/{id}/status")
+    public ResponseEntity<TaskDTO> setTaskStatus(@PathVariable Long id, @RequestBody TaskDTO taskDTO) {
+        if (taskService.getTaskById(id) != null) {
+            TaskDTO setStatusTask = taskService.setTaskStatus(id, taskDTO);
+            return ResponseEntity.status(HttpStatus.OK).body(setStatusTask);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
 }
